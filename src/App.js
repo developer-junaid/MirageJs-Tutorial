@@ -1,23 +1,70 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import "./app.css";
 
 function App() {
+  // State for books
+  const [books, setBooks] = useState([]);
+
+  // Call API
+  useEffect(() => {
+    // Interval: will call itself after specified interval of time
+    setInterval(() => {
+      // Fetch Data
+      fetch("/api/books")
+        .then((resp) => resp.json())
+        .then((data) => {
+          setBooks(data);
+        });
+    }, 2000);
+  }, []);
+
+  // Add Book
+  const addBook = () => {
+    const title = prompt("Enter Book Title");
+    const author = prompt("Enter Book Author");
+
+    // If Data is not there
+    if (!title || !author) {
+      return false;
+    }
+    // Call post api
+    fetch("api/add", {
+      method: "POST",
+      // Stringify data and send it
+      body: JSON.stringify({ title, author }),
+    }).catch((err) => {
+      console.log("Error", err);
+    });
+  };
+
+  // If data is loading
+  if (!books.length) {
+    return <h2>Loading</h2>;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="main-container">
+      <h2>Available Books</h2>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Author</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {books.map((book, index) => {
+            return (
+              <tr key={index}>
+                <td>{book.title}</td>
+                <td>{book.author}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      <button onClick={addBook}>Add Book</button>
     </div>
   );
 }
