@@ -1,3 +1,5 @@
 ## Mirage Js Tutorial
 
-#### Mirage Js is a library to make, a mocking(fake) server to simulate the real server, that will help you in your development process.
+#### Mirage JS is an API mocking library that lets you build, test and share a complete working JavaScript application without having to rely on any backend services.
+
+### Explained with a "Simple" _Library Management System_ Example
